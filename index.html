@@ -183,17 +183,78 @@ td {
 				<section>
 					<h2>Corrections</h2>
 					<p>Test</p>
+
+					<aside class="notes">
+						Before moving into the main presentation, I want to make some quick corrections.
+
+
+					</aside>
 				</section>
 				<section>
 					<h2>Introduction</h2>
-					<p>Test</p>
+					<ul>
+						<li>Goal - Creating a tracking platform, not a tracker</li>
+						<li class="fragment">Motivation - Why design a low power tracker?</li>
+						<li class="fragment">
+							Developing the tracker
+							<ul>
+								<li>Writing Code</li>
+								<li>Creating PCB</li>
+							</ul>
+						</li>
+						<li class="fragment">Profiling code</li>
+					</ul>
+
+					<aside class="notes">
+						The goal of this project was to create a tracking device platform, which is a theoretical device other people could use in their projects.
+						This includes not only a prototype, which they can use as a basis for their project, but also an analysis of its performance.
+						This platform should allow for resonable tracking accuracy and it should be optimized for power consumption.
+
+						<b>---- NEXT ----</b>
+						Why do we want to create this platform?
+						There are two main reasons, there is a need for trackers and tracking techniques are rarely optimized for power, but accuracy.
+						This leads to an interesting analysis with a traid-off between accuracy and power, which is rarely discussed.
+						This could also lead to new break-throughs in power consumption optimizations.
+						For this, we would need to develop a tracker.
+
+						<b>---- NEXT ----</b>
+						The tracker consists of two parts, writing the code for it and creating the PCB.
+						The order of this is important, as we might descover things about the chips when developing and profiling the code.
+						This was broken in our project, and the consequences will be discussed later.
+
+						<b>---- NEXT ----</b>
+						To be able to develop power effecient code, we also need a way to profile it.
+						We have therefor chosen to develop a program for this.
+					</aside>
+				</section>
+				<section>
+					<h2>Requrements</h2>
+					<ul>
+						<li>Tracking accuracy: 50m</li>
+						<li>Battery-lifetime: 10 years</li>
+						<li>Communication range: 10km</li>
+						<li>Simple visulization of power consumption</li>
+						<li>Optimizations
+							<ol>
+								<li>Range of communication</li>
+								<li>Power consumption</li>
+								<li>Modularity</li>
+							</ol>
+						</li>
+					</ul>
+
+					<aside class="notes">
+					</aside>
+				</section>
+				<section>
+					<h2>Picking Components</h2>
 				</section>
 				<section>
 					<h2>Program Implementation</h2>
 					<p>Test</p>
 				</section>
 				<section>
-					<h2>Profiling Implementation</h2>
+					<h2>Profiling Code</h2>
 					<p>Test</p>
 				</section>
 				<section>
