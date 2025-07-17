@@ -450,6 +450,30 @@ td {
 						The final part of the code exits the LoRa network and suspends the modem right before we sleep.
 					</aside>
 				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Sleep</h3>
+					<ul>
+						<li>Different sleep modes used different places:
+							<ol>
+								<li class="fragment">Waiting for LR1110 communication</li>
+								<li class="fragment">Sleeping at the end after execution is done</li>
+							</ol>
+						</li>
+					</ul>
+
+					<aside class="notes">
+						There are two part of the code where we sleep, at the end and when waiting for the LR1110 to communicate.
+
+						<b>---- NEXT ----</b>
+						Waiting for the LR1110 should keep the prgram counter valied, which means we have to retain RAM and registers.
+						Because of this, we can only enter XXX sleep.
+
+						<b>---- NEXT ----</b>
+						The final sleep should consume the least amount of power, therefor XXX sleep mode is used.
+						This also has the effect of clearing RAM and resetting the program, thus we do not have to free any pointers or create an infinite while loop.
+					</aside>
+				</section>
 
 				<!--- Profiling Code --->
 				<section>
