@@ -173,6 +173,7 @@ td {
 	<body>
 		<div class="reveal">
 			<div class="slides">
+				<!--- First Slide --->
 				<section>
 					<h2>
 						Development and implementation of embedded low-power tracking platform
@@ -180,6 +181,8 @@ td {
 					</h2>
 					<p><nobr>Jonas Birkedal Dudal Jensen (s203849)</nobr></p>
 				</section>
+
+				<!--- Corrections --->
 				<section>
 					<h2>Corrections</h2>
 					<p>Test</p>
@@ -190,6 +193,8 @@ td {
 
 					</aside>
 				</section>
+
+				<!--- Introduction --->
 				<section>
 					<h2>Introduction</h2>
 					<ul>
@@ -227,36 +232,232 @@ td {
 						We have therefor chosen to develop a program for this.
 					</aside>
 				</section>
+
+				<!--- Requirements --->
 				<section>
 					<h2>Requrements</h2>
 					<ul>
-						<li>Tracking accuracy: 50m</li>
-						<li>Battery-lifetime: 10 years</li>
-						<li>Communication range: 10km</li>
-						<li>Simple visulization of power consumption</li>
-						<li>Optimizations
+						<li class="fragment">Tracking accuracy: 50m</li>
+						<li class="fragment">Battery-lifetime: 10 years</li>
+						<li class="fragment">Communication range: 10km</li>
+						<li class="fragment">Simple visulization of power consumption</li>
+						<li class="fragment">Optimizations
 							<ol>
-								<li>Range of communication</li>
-								<li>Power consumption</li>
-								<li>Modularity</li>
+								<li class="fragment">Range of communication</li>
+								<li class="fragment">Power consumption</li>
+								<li class="fragment">Modularity</li>
 							</ol>
 						</li>
 					</ul>
 
 					<aside class="notes">
+						Before developing the tracker, we have to define some requirements.
+
+						<b>---- NEXT ----</b>
+						First, the accuracy of the tracker should be within 50m.
+						This was chosen as within 50m you would be able to locate most devices.
+
+						<b>---- NEXT ----</b>
+						It should be able to keep running for at least 10 years on a single CR2032 battery.
+						10 years were chosen, as this is the target of most LPWAN devices.
+
+						<b>---- NEXT ----</b>
+						It should be able to connect to the network from at least 10km away.
+						This limits our possible communication protocols to long range communication, meaning we can expect bettery coverage without pre-setup infrastructure.
+
+						<b>---- NEXT ----</b>
+						We should be able to get at simple overview of the power consumption of the system.
+						This would allow us to do more effective power consumption measurments.
+
+						<b>---- NEXT ----</b>
+						Finally we want to optimize the system on different parameters, this should be the order of importans when selecting components and creating the code.
+
+						<b>---- NEXT ----</b>
+						First is the range of the communication.
+
+						<b>---- NEXT ----</b>
+						Next is the power consumption of the system.
+
+						<b>---- NEXT ----</b>
+						Finally, the modularity of the system.
+
+						This order was chosen as we wanted a system we can use in many different situations, for a long time, and which is extendable.
 					</aside>
 				</section>
+
+				<!--- Picking Components --->
 				<section>
 					<h2>Picking Components</h2>
+					<h3>MCU</h3>
+					<ul>
+						<li>STM32</li>
+					</ul>
 				</section>
-				<section>
+
+				<!--- Program Implementation --->
+				<section data-auto-animate data-auto-animate-id="1">
 					<h2>Program Implementation</h2>
-					<p>Test</p>
+					<ul>
+						<li>Program parts
+							<ol>
+								<li>Initialization</li>
+								<li>Join network</li>
+								<li>Scan location</li>
+								<li>Send data</li>
+								<li>Exit</li>
+							</ol>
+						</li>
+						<li class="fragment">Program flow using #define</li>
+					</ul>
+
+					<aside class="notes">
+						The program consists of 5 main parts: Initialization, Join network, Scanning location, Send data, and exit.
+
+						<b>---- NEXT ----</b>
+						Each part of the code does a specific task.
+						This task will change based on what we want to program to do.
+						To do this we use defines to mask out specific parts of the code at compile time.
+						This allows for more effecient execution compared to using normal if-statements, as masking out the code will not create any aditional code.
+					</aside>
 				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Initialization</h3>
+					<div style="width: 50%; float: left;">
+						<ol>
+							<li>Reset LR1110</li>
+							<li>Resume LR1110 communication</li>
+							<li>Initialize BC660K-GL</li>
+							<li>Connect to NB</li>
+							<li>Initialize LR1110</li>
+						</ol>
+					</div>
+					<div style="width: 50%; float: left">
+						<img src="images/tracker-flowchart-init.svg" width="40%">
+					</div>
+
+					<aside class="notes">
+						Initialization handles setting up the LR1110 and BC660K-GL.
+						Based on the settings, this includes resetting the LR1110, resuming its radio communication, connecting the BC660K-GL to NB, and initializing the LR1110.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Join Network</h3>
+					<div style="width: 50%; float: left;">
+						<ul>
+							<li>Join LoRa</li>
+							<li>Connect MQTT</li>
+						</ul>
+					</div>
+					<div style="width: 50%; float: left">
+						<img src="images/tracker-flowchart-join.svg" width="100%">
+					</div>
+
+					<aside class="notes">
+						Joining the network is split into two paths: Joining LoRa or connecting to MQTT.
+						The LoRa part does not guarentee that we are connected, this is checked later on.
+						This allows us to initiate the scanning without having to wait for a response.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Scan Location</h3>
+					<div style="width: 50%; float: left;">
+						<ol>
+							<li>Scan WiFi</li>
+							<li>Scan GNSS</li>
+							<li>Wait for WiFi</li>
+							<li>Wait for GNSS</li>
+							<li>Is data valid?
+								<ul>
+									<li>No: Scan again and wait for result</li>
+									<li>Yes: Continue</li>
+								</ul>
+							</li>
+						</ol>
+					</div>
+					<div style="width: 50%; float: left">
+						<img src="images/tracker-flowchart-location.svg" width="100%">
+					</div>
+
+					<aside class="notes">
+						Location scanning can be done with WiFi or GNSS.
+						First we initiate the scanning, then we wait for a response.
+						The GNSS scanning might return that there are no sateliets, if this happens, we scan and wait again.
+
+						This is not split into two paths, as we allow both WiFi and GNSS scanning.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Send Data - LoRa</h3>
+					<div style="width: 50%; float: left;">
+						<ol>
+							<li>Wait for connection</li>
+							<li>Try to send data</li>
+							<li>If data transmission failed, rejoin network</li>
+						</ol>
+					</div>
+					<div style="width: 50%; float: left">
+						<img src="images/tracker-flowchart-send-lora.svg" width="100%">
+					</div>
+
+					<aside class="notes">
+						We then send the scanned data.
+						This is done over LoRa or NB.
+						
+						For LoRa we first check if we have joined the network, if it failed, we try again until we succeed.
+						We then try to send the data, first we check how many times we have failed at sending the data, if this is greater than our counter, we leave the network and rejoin.
+						We then send the WiFi or GNSS data.
+						If we failed, then we try again from the beginning, otherwise we continue.
+
+						This loop is created to harden the code, as we noticed when testing the system, it might sometimes be unable to send the data, at which point re-joining the network helped.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Send Data - MQTT</h3>
+					<div style="width: 50%; float: left;">
+						<ol>
+							<li>Send WiFi data</li>
+							<li>Send GNSS data</li>
+						</ol>
+					</div>
+					<div style="width: 50%; float: left">
+						<img src="images/tracker-flowchart-send-mqtt.svg" width="60%">
+					</div>
+
+					<aside class="notes">
+						Sending the data over NB is simply done by publishing the results to MQTT.
+						All error hanlding is done in the send function, because of how the we communicate with the BC660K-GL.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2>Program Implementation</h2>
+					<h3>Exit</h3>
+					<div style="width: 50%; float: left;">
+						<ol>
+							<li>Leave LoRa</li>
+							<li>Suspend LR1110 communication</li>
+						</ol>
+					</div>
+					<div style="width: 50%; float: left">
+						<img src="images/tracker-flowchart-end.svg" width="60%">
+					</div>
+
+					<aside class="notes">
+						The final part of the code exits the LoRa network and suspends the modem right before we sleep.
+					</aside>
+				</section>
+
+				<!--- Profiling Code --->
 				<section>
 					<h2>Profiling Code</h2>
 					<p>Test</p>
 				</section>
+
+				<!--- Results --->
 				<section>
 					<h2>Results</h2>
 					<p>Test</p>
@@ -531,12 +732,23 @@ td {
 						</table>
 					</div>
 				</section>
+
+				<!--- Discussion --->
 				<section>
 					<h2>Discussion</h2>
 					<p>Test</p>
+					Was unable to measure accurate sleep current consumption, therefor not as accurate.
 				</section>
+
+				<!--- Conclusion --->
 				<section>
 					<h2>Conclusion</h2>
+					<p>Test</p>
+				</section>
+
+				<!--- Further Work --->
+				<section>
+					<h2>Further Work</h2>
 					<p>Test</p>
 				</section>
 			</div>
