@@ -168,6 +168,20 @@ td {
 
 	position: relative;
 }
+
+/*.top-header {
+	position: absolute;
+	padding: 0px 20px 10px 20px;
+	top: 0px;
+	left: 0%;
+	z-index: 500;
+	transform: translate(0%, -50%);
+}
+
+.slides>section {
+	width: 100%;
+	height: 100%;
+}*/
 		</style>
 	</head>
 	<body>
@@ -184,7 +198,7 @@ td {
 
 				<!--- Corrections --->
 				<section>
-					<h2>Corrections</h2>
+					<h2 class="top-header">Corrections</h2>
 					<p>Test</p>
 
 					<aside class="notes">
@@ -196,7 +210,7 @@ td {
 
 				<!--- Introduction --->
 				<section>
-					<h2>Introduction</h2>
+					<h2 class="top-header">Introduction</h2>
 					<ul>
 						<li>Goal - Creating a tracking platform, not a tracker</li>
 						<li class="fragment">Motivation - Why design a low power tracker?</li>
@@ -235,7 +249,7 @@ td {
 
 				<!--- Requirements --->
 				<section>
-					<h2>Requrements</h2>
+					<h2 class="top-header">Requrements</h2>
 					<ul>
 						<li class="fragment">Tracking accuracy: 50m</li>
 						<li class="fragment">Battery-lifetime: 10 years</li>
@@ -287,7 +301,7 @@ td {
 
 				<!--- Picking Components --->
 				<section>
-					<h2>Picking Components</h2>
+					<h2 class="top-header">Picking Components</h2>
 					<h3>MCU</h3>
 					<ul>
 						<li>STM32</li>
@@ -296,7 +310,7 @@ td {
 
 				<!--- Program Implementation --->
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<ul>
 						<li>Program parts
 							<ol>
@@ -321,7 +335,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Initialization</h3>
 					<div style="width: 50%; float: left;">
 						<ol>
@@ -342,7 +356,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Join Network</h3>
 					<div style="width: 50%; float: left;">
 						<ul>
@@ -361,7 +375,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Scan Location</h3>
 					<div style="width: 50%; float: left;">
 						<ol>
@@ -390,7 +404,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Send Data - LoRa</h3>
 					<div style="width: 50%; float: left;">
 						<ol>
@@ -416,7 +430,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Send Data - MQTT</h3>
 					<div style="width: 50%; float: left;">
 						<ol>
@@ -434,7 +448,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Exit</h3>
 					<div style="width: 50%; float: left;">
 						<ol>
@@ -451,7 +465,7 @@ td {
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>Program Implementation</h2>
+					<h2 class="top-header">Program Implementation</h2>
 					<h3>Sleep</h3>
 					<ul>
 						<li>Different sleep modes used different places:
@@ -477,20 +491,46 @@ td {
 
 				<!--- Profiling Code --->
 				<section>
-					<h2>Profiling Code</h2>
+					<h2 class="top-header">Profiling Code</h2>
 					<p>Test</p>
 				</section>
 
 				<!--- Results --->
-				<section>
-					<h2>Results</h2>
-					<p>Test</p>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3></h3>
+					</h2>
+
+					<ul>
+						<li>Accuracy of tracking</li>
+						<li>Power consumption of settings
+							<ol>
+								<li class="fragment">Execution charge</li>
+								<li class="fragment">Average sleep current</li>
+							</ol>
+						</li>
+					</ul>
+
+					<aside class="notes">
+						Based on the requirements, we want to know two things: The accuracy of the tracking and the power consumption of the system.
+
+						For the tracking, we will look at how close the results are to some ground truth.
+
+						For the power, we want to know two things
+						<b>---- NEXT ----</b>
+						How much charge does the program take to execute, and
+						<b>---- NEXT ----</b>
+						What is the average current of the system when it sleeps.
+						This can then be used calculate the estimated power battery life of the system.
+					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>
-						Results - Accuracy of Tracking
+					<h2 class="top-header">
+						Results
+						<h3>Accuracy of Tracking</h3>
 					</h2>
-					<div class="r-stretch">
+					<div class="r-stretch fragment">
 						<table style="width: 100%" class="animate-zoom">
 							<tr>
 								<th>Dorm Inside</th>
@@ -540,10 +580,18 @@ td {
 							</tr>
 						</table>
 					</div>
+
+					<aside class="notes">
+						First of, the accuracy of the tracking can be visualized as placing all the measurments on a map, then looking how close they are to the truth.
+
+						<b>---- NEXT ----</b>
+						First we place the ground truth value on the map, this can be seen as the red marker here.
+					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>
-						Results - Accuracy of Tracking
+					<h2 class="top-header">
+						Results
+						<h3>Accuracy of Tracking</h3>
 					</h2>
 					<div class="r-stack">
 						<div class="r-stretch">
@@ -647,10 +695,18 @@ td {
 							</table>
 						</div>
 					</div>
+
+					<aside class="notes">
+						Then we place the GPS measurments on the same map, for this we need to zoom out.
+
+						<b>---- NEXT ----</b>
+						On the map, the blue markers no represent the GPS measurments.
+					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
-					<h2>
-						Results - Accuracy of Tracking
+					<h2 class="top-header">
+						Results
+						<h3>Accuracy of Tracking</h3>
 					</h2>
 					<div class="r-stack">
 						<div class="r-stretch">
@@ -754,25 +810,103 @@ td {
 							</table>
 						</div>
 					</div>
+
+					<aside class="notes">
+						Then we zoom out even further and place the WiFi scanning results on the map.
+
+						<b>---- NEXT ----</b>
+						These then represent how far away all the WiFi scanning measurments are from the ground truth as well as the GPS measurments.
+
+						Some interesting findings to note when looking at the data like this, is that the GPS data seem to be very close to each other and all agree on a center, however not always being on the ground truth.
+
+						The WiFi scannings seem to spread more, with the measurments being focused mostly on roads or publically accessable places.
+						This is especially noticible when looking at the dorm measurments.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Accuracy of Tracking</h3>
+					</h2>
+
+					<div class="r-stack">
+						<img src="/images/forrest-gt.png">
+						<img class="fragment" src="/images/forrest-gps.png">
+					</div>
+
+					<aside class="notes">
+						What you might have noticed is that we are missing one data set, that being the forest measurments.
+
+						First of all, the measurments were taken right here, next to a lake, in a foresty area.
+
+						<b>---- NEXT ----</b>
+						The GPS measurments show that most of the measurments were focused on the correct spot, however with a few outliers being spread quite a lot.
+						This spread was probably due to the foliage above the phone.
+
+						We can also see, that no WiFi measurment data was able to be taken when at this location, as we were too far away from any access point.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Accuracy of Tracking</h3>
+					</h2>
+
+					<img src="/images/wifi-accuracy.svg"></img>
+
+					<aside class="notes">
+						If we collect the data, we can see that the GPS is generally more accurate than the WiFi scanning.
+
+						This graph represents the error of each of the measurments, for WiFi and GPS, in meters.
+						The graph is logarithmic on the y-axis to compress the data better.
+						Increasing the accuracy means decreasing the distance, and thus the lower the bar the better.
+
+						The one measurment from the forest is indeed very inaccuracte for the GPS, however the WiFi is just not there.
+						
+						From this, we see that the best places to use WiFi scanning is places with a lot of access points and roads nearby, this is usually indoors.
+						For GPS, the data seems to be affected a lot by direct coverage by foliage or roof and how close you are to buildings.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Power Consumption</h3>
+					</h2>
+
+					<aside class="notes">
+
+					</aside>
 				</section>
 
 				<!--- Discussion --->
 				<section>
-					<h2>Discussion</h2>
+					<h2 class="top-header">Discussion</h2>
 					<p>Test</p>
 					Was unable to measure accurate sleep current consumption, therefor not as accurate.
+
+					<aside class="notes">
+						The WiFi results seem to be not very accurate, however the GPS would also fail at some locations.
+					</aside>
 				</section>
 
 				<!--- Conclusion --->
 				<section>
-					<h2>Conclusion</h2>
+					<h2 class="top-header">Conclusion</h2>
 					<p>Test</p>
+
+					<aside class="notes">
+
+					</aside>
 				</section>
 
 				<!--- Further Work --->
 				<section>
-					<h2>Further Work</h2>
+					<h2 class="top-header">Further Work</h2>
 					<p>Test</p>
+
+					<aside class="notes">
+
+					</aside>
 				</section>
 			</div>
 		</div>
