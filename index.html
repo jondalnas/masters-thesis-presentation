@@ -182,6 +182,11 @@ td {
 	width: 100%;
 	height: 100%;
 }*/
+
+.bigger-text {
+	font-size: 40pt;
+	font-weight: bold;
+}
 		</style>
 	</head>
 	<body>
@@ -873,8 +878,134 @@ td {
 						<h3>Power Consumption</h3>
 					</h2>
 
-					<aside class="notes">
+					<ul>
+						<li class="fragment">Compiler flags</li>
+						<li class="fragment">Pull-up on NSS</li>
+						<li class="fragment">Sleeping/busy waiting</li>
+						<li class="fragment">Resetting devices</li>
+						<li class="fragment">Leaving and suspending</li>
+						<li class="fragment">Waiting for TX window</li>
+						<li class="fragment">Clock frequencies</li>
+						<li class="fragment">Supply voltage</li>
+					</ul>
 
+					<aside class="notes">
+						For the power consumption, the settings tested are:
+						<b>---- NEXT ----</b>
+						Compiler flags
+						<b>---- NEXT ----</b>
+						Adding a Pull-up on NSS
+						<b>---- NEXT ----</b>
+						Sleeping vs busy waiting when waiting for the LR1110
+						<b>---- NEXT ----</b>
+						Resetting devices between executions
+						<b>---- NEXT ----</b>
+						Leaving and suspending the LR1110 connection 
+						<b>---- NEXT ----</b>
+						Waiting for the TX recieve window
+						<b>---- NEXT ----</b>
+						Different clock frequencies
+						<b>---- NEXT ----</b>
+						Changing voltage
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Power Consumption</h3>
+					</h2>
+
+					<img src="/images/power.svg">
+
+					<aside class="notes">
+						Plotting these results, we get the following graph, with the total consumed charge for one execution of the program on the y-axis.
+
+						The most noticible conclusion we can draw, is that optimizing the program has almost no effect on the power consumption.
+						However minimizing the time spent awake, and thus the time the LR1110 is active, seems to have an impact.
+						Leaving the network seems to have a little impact, and not waiting seems to have an even bigger.
+
+						Suspending the modem seems to take more charge then leaving, or even not doing anything.
+
+						There is a dip in charge consumed when optimizing the code at -O1, this will be discussed later.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Power Consumption</h3>
+					</h2>
+
+					<img src="/images/sleep.svg">
+
+					<aside class="notes">
+						We can also plot the average current consumption when sleeping, this is show in the following graph, where the average sleep curent is on the y-axis.
+
+						We can see that adding a pull-up resistor on NSS increases the current consumption, while leaving the network decreases it again.
+						Suspending the modem seems to have almost no effect.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Power Consumption</h3>
+					</h2>
+
+					<img src="/images/freq.svg">
+
+					<aside class="notes">
+						We can also see the effects of frequency on the charge consumed in this graph.
+
+						This shows that a minimum can be found, when setting the clock speed to 524kHz.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Power Consumption</h3>
+					</h2>
+
+					<img src="/images/voltage.svg">
+
+					<aside class="notes">
+						Finally, the effects of changing the voltage on the charge consumption can be seen in this figure.
+
+						The measurments were taken on the PCB we developed, since we know the voltage it can support.
+
+						This shows that skipping listening for LoRa response makes sense, while dropping the voltage does decrease the charge in normal execution, while almost not changing when skipping listening.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">
+						Results
+						<h3>Power Consumption</h3>
+					</h2>
+
+					<ul>
+						<li>Estimate charge of device in sleep mode
+							<ul>
+								<li>MCU: 16nA</li>
+								<li>LR1110: 1.6μA</li>
+								<li>Total: 1.616μA</li>
+							</ul>
+						</li>
+						<li>Estimate program execution time
+							<ul>
+								<li>Runtime/Executions: 12h/1101</li>
+								<li>Average execution: 29.2s</li>
+							</ul>
+						</li>
+						<li>Calculate average current for CR2032: 2.566μA</li>
+						<li>Calculate period: 3.93 days</li>
+
+					<aside class="notes">
+						Because we did not have a pull-up resistor on NSS, we were unable to measure the average current consumption on the PCB.
+						Therefor we calculated the maximal charge consumed by the LR1110 and the MCU in low power mode.
+						This gave us an estimate of the average power consumption, which is around 1.616uA.
+
+						We also need the execution time of our program, which is around 29.2s.
+
+						Then we can calculate the average current consumption needed to achieve a 10 year battery life, that being 2.566uA.
+						Finally the waiting period between executions can be calculated, that being 3.93 days.
 					</aside>
 				</section>
 
@@ -886,6 +1017,9 @@ td {
 
 					<aside class="notes">
 						The WiFi results seem to be not very accurate, however the GPS would also fail at some locations.
+
+						The charge consumed when executing the program at -O1 seems to be a fluke, as it does not make sense.
+						More testing is needed before a conclusion can be drawn.
 					</aside>
 				</section>
 
