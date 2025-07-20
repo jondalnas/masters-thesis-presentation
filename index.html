@@ -171,8 +171,8 @@ td {
 
 /*.top-header {
 	position: absolute;
-	padding: 0px 20px 10px 20px;
-	top: 0px;
+	padding: 10px 20px 10px 20px;
+	top: 20px;
 	left: 0%;
 	z-index: 500;
 	transform: translate(0%, -50%);
@@ -186,6 +186,11 @@ td {
 .bigger-text {
 	font-size: 40pt;
 	font-weight: bold;
+}
+
+.split {
+	width: 50%;
+	float: left;
 }
 		</style>
 	</head>
@@ -307,10 +312,25 @@ td {
 				<!--- Picking Components --->
 				<section>
 					<h2 class="top-header">Picking Components</h2>
-					<h3>MCU</h3>
 					<ul>
-						<li>STM32</li>
+						<li class="fragment">STM32</li>
+						<li class="fragment">LR1110</li>
+						<li class="fragment">BC660K-GL</li>
 					</ul>
+
+					<aside class="notes">
+						Based on the requirements, we need to first pick an MCU.
+
+						<b>---- NEXT ----</b>
+						Based on trying to optimize for power consumption in both running and sleep mode, we chose to go with the STM32 line, specifically the STM32U0 and STM32U3.
+
+						<b>---- NEXT ----</b>
+						Then, to communicate over LoRa, we chose the LR1110, which will also be used for tracking, as it contains a WiFi and GNSS reciever.
+						Because of this, we need to always have the LR1110 on the project, to get it to work.
+
+						<b>---- NEXT ----</b>
+						Finally, we have the BC660K-GL, which we use for NB communication.
+					</aside>
 				</section>
 
 				<!--- Program Implementation --->
@@ -497,7 +517,22 @@ td {
 				<!--- Profiling Code --->
 				<section>
 					<h2 class="top-header">Profiling Code</h2>
-					<p>Test</p>
+					<img src="/images/profiling-program.svg">
+
+					<aside class="notes">
+						One of the requirements was to easily profile code and find which parts of the code consume the most power.
+						To do this, we created a program, which can take the measurments and code, and display the charge consumption per line.
+
+						This means we would first need to convert the code into specific sections.
+						Then we need to convert the measurments into the consumption for each of these sections.
+						We use two different scripts for this, one for converting code and the other for collecting measurments.
+						Then a seperate script was created, which could display these as the background color of the code.
+
+						The colors represent the fraction of how much a line takes to execute compared to the total charge consumed.
+						This fraction is then gamma corrected, to make small differences in the not-so power consuming section be more visible.
+
+						The user can also highlight a line of code to get the charge consumed at that line at the bottom of the window.
+					</aside>
 				</section>
 
 				<!--- Results --->
@@ -1012,14 +1047,95 @@ td {
 				<!--- Discussion --->
 				<section>
 					<h2 class="top-header">Discussion</h2>
-					<p>Test</p>
-					Was unable to measure accurate sleep current consumption, therefor not as accurate.
+					<h3>Tracking Accuracy</h3>
+
+					<div class="split">
+						<ul>
+							<li>GPS error lower than WiFi</li>
+							<li>GPS still inaccurate</li>
+							<li>Forrest measurments very inaccurate</li>
+						</ul>
+					</div>
+					<div class="split">
+						<img src="/images/wifi-accuracy.svg">
+					</div>
 
 					<aside class="notes">
-						The WiFi results seem to be not very accurate, however the GPS would also fail at some locations.
+						In general, the WiFi results seem to be not very accurate, being around a factor 10 from GPS.
+						There seems to be some correlation between GPS and WiFi accuracy, where places with high GPS accuracy has low WiFi and vise-versa.
+						GPS works best when outside with a clear view of the sky, while WiFi works best close to many APs, which is usually indoors.
+						GPS seems to also have a problem with foleage and being close to buildings, as can be seen with the forest measurment and the DTU outside, which has clear view of the sky but was close to a wall.
+					</aside>
+				</section>
+				<section>
+					<h2 class="top-header">Discussion</h2>
+					<h3>Power Consumption</h3>
 
-						The charge consumed when executing the program at -O1 seems to be a fluke, as it does not make sense.
-						More testing is needed before a conclusion can be drawn.
+					<div class="split">
+						<ul>
+							<li>Optimization flags
+								<ul>
+									<li>MCU waiting for LR1110 more</li>
+									<li>Favoring fast energy intensive instructions</li>
+								</ul>
+							</li>
+							<li>Adding PU and leaving network</li>
+							<li>Not waiting for response</li>
+							<li>Optimal frequency</li>
+						</ul>
+					</div>
+					<div class="split">
+						<div class="split">
+							<img src="/images/power.svg">
+						</div>
+						<div class="split">
+							<img src="/images/sleep.svg">
+						</div>
+						<img src="/images/freq.svg">
+					</div>
+
+					<aside class="notes">
+						On the charge consumption, we can see that compiler flags seem to have no real effect, with the exception of using -O1.
+						Since this is counterintuitive, more measurments would be needed before a definitive answer can be given.
+						Some explanations would be that greater optimizations would make some parts of the code too fast, which means we would need to wait for the LR1110 more.
+						The other explanation would be that optimization flags do not care about power, only execution time, since some flags might change the code to use more energy intensive instructions, this could increase the power consumed.
+
+						Adding a PU on NSS increases the average current consumption when sleeping, however this is due to the LR1110 now periodically sending and receaving messages while the MCU sleeps.
+						We can combine this with leaving the network before sleeping, which removes this, and we can therefor see a great decrese in average charge consumed.
+						This does not affect the charge consumed when running at all.
+
+						We also found that not waiting for a response from the LoRa network, would decrease the charge consumed, this is due to us no longer receaving the first acknowledge from the server.
+
+						Finally we found out that the optimal frequency for the MCU CPU was around 524kHz.
+						At this frequency, we execute the code fast enough for the LR1110 to not be waisting time unnececerily, without waisting power more then nececerilly when sleeping.
+					</aside>
+				</section>
+				<section>
+					<h2 class="top-header">Discussion</h2>
+					<h3>Battery-Lifetime</h3>
+
+					<div class="split">
+						<ul>
+							<li>Charge decrease when reducing voltage</li>
+							<li>Skip listening did not work, no package received</li>
+							<li>Sleep current estimated</li>
+							<li>Sleep period very long, could be fixed with adding battery</li>
+						</ul>
+					</div>
+					<div class="split">
+						<img src="/images/voltage.svg">
+					</div>
+
+					<aside class="notes">
+						Looking at the supply voltage graph, we see that reducing the voltage from 3.3V to 2.5V gives a noticible decrease in charge consumed.
+						This effect was not noticed as much when not waiting for RX response, which is probably due to it not being able to receive any packages.
+
+						We were also unable to measure the sleep current on the final PCB, as we did not have a PU on the NSS pin.
+						This means the results are not as accurate as they do not account for all other components and swings in the current consumption.
+
+						From the estimated battery lifetime, we found that a sleep period of about 4 days would be needed, this is a little longer than what could be concidered useable.
+						We could add more batteries to reduce this period, with 4 batteries reducing it down to 1 day between executions.
+						If a shorter period is needed and we do not want to add aditional batteries, then we would have to live with a shorter battery lifetime.
 					</aside>
 				</section>
 
