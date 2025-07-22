@@ -226,7 +226,7 @@ td {
 				<section>
 					<h2 class="top-header">Introduction</h2>
 					<ul>
-						<li>Goal - Creating a tracking platform, not a tracker</li>
+						<li>Goal - Creating a theoretical tracking platform</li>
 						<li class="fragment">Motivation - Why design a low power tracker?</li>
 						<li class="fragment">
 							Developing the tracker
@@ -235,29 +235,25 @@ td {
 								<li>Creating PCB</li>
 							</ul>
 						</li>
-						<li class="fragment">Profiling code</li>
+						<li class="fragment">Profiling program</li>
 					</ul>
 
 					<aside class="notes">
-						The goal of this project was to create a tracking device platform, which is a theoretical device other people could use in their projects.
-						This includes not only a prototype, which they can use as a basis for their project, but also an analysis of its performance.
-						This platform should allow for reasonable tracking accuracy, and it should be optimized for power consumption.<br><br>
+						The goal of the project was to create a theoretical tracking platform, which <b>could be the bases of an actual tracker</b>.<br>
+						This includes a <b>prototype</b>, as well as an <b>analysis of its performance</b>.<br>
+						This platform should <b>focus on accuracy and battery-life</b>.<br><br>
 
 						<b>---- NEXT ----</b><br>
-						Why do we want to create this platform?
-						There are two main reasons, there is a need for trackers and tracking techniques are rarely optimized for power, but accuracy.
-						This leads to an interesting analysis with a trade-off between accuracy and power, which is rarely discussed.
-						This could also lead to new breakthroughs in power consumption optimizations.
-						For this, we would need to develop a tracker.<br><br>
+						<b>Why do this?</b>
+						There are <b>two main reasons</b>, there is a <b>need for trackers</b> and tracking techniques are <b>rarely optimized for power</b>, but accuracy.<br>
+						This leads to an interesting <b>analysis</b> with a trade-off between <b>accuracy and power</b>, which is rarely discussed.<br><br>
 
 						<b>---- NEXT ----</b><br>
-						The tracker consists of two parts, writing the code for it and creating the PCB.
-						The order of this is important, as we might discover things about the chips when developing and profiling the code.
-						This was broken in our project, and the consequences will be discussed later.<br><br>
+						<b>Creating the tracker</b> consists of two parts, <b>writing the code</b> for it and <b>creating the PCB</b>.<br>
+						We will <b>only discuss writing the code</b>, as <b>PCB design</b> is <b>not part</b> of the project.<br><br>
 
 						<b>---- NEXT ----</b><br>
-						To be able to develop power efficient code, we also need a way to profile it.
-						We have therefor chosen to develop a program for this.
+						Finally, we want to <b>create a program</b>, which can be used <b>to profile</b> the <b>power consumption</b> of the project.
 					</aside>
 				</section>
 
@@ -265,51 +261,38 @@ td {
 				<section>
 					<h2 class="top-header">Requirements</h2>
 					<ul>
-						<li class="fragment">Tracking accuracy: 50m</li>
-						<li class="fragment">Battery-lifetime: 10 years</li>
-						<li class="fragment">Communication range: 10km</li>
-						<li class="fragment">Simple visualization of power consumption</li>
-						<li class="fragment">Optimizations
+						<li>Tracking accuracy: 50m</li>
+						<li>Battery-lifetime: 10 years</li>
+						<li>Communication range: 10km</li>
+						<li>Simple visualization of power consumption</li>
+						<li>Optimization parameters
 							<ol>
-								<li class="fragment">Range of communication</li>
-								<li class="fragment">Power consumption</li>
-								<li class="fragment">Modularity</li>
+								<li>Range of communication</li>
+								<li>Power consumption</li>
+								<li>Modularity</li>
 							</ol>
 						</li>
 					</ul>
 
 					<aside class="notes">
-						Before developing the tracker, we have to define some requirements.<br><br>
+						The requirements of the project are.<br><br>
 
-						<b>---- NEXT ----</b><br>
-						First, the accuracy of the tracker should be within 50m.
-						This was chosen as within 50m you would be able to locate most devices.<br><br>
+						First, <b>the accuracy</b> of the tracker should be <b>within 50m</b>.<br>
+						This was chosen as you would be able to <b>get a general idea of where the device is.</b><br><br>
 
-						<b>---- NEXT ----</b><br>
-						It should be able to keep running for at least 10 years on a single CR2032 battery.
-						10 years were chosen, as this is the target of most LPWAN devices.<br><br>
+						It should be able to keep running for at least <b>10 years on a single CR2032 battery</b>.<br>
+						10 years was chosen, as this is the <b>target of most LPWAN</b> devices.<br><br>
 
-						<b>---- NEXT ----</b><br>
-						It should be able to connect to the network from at least 10km away.
-						This limits our possible communication protocols to long range communication, meaning we can expect battery coverage without pre-setup infrastructure.<br><br>
+						It should be able to <b>connect to the network</b> from at least <b>10km away.</b><br>
+						This was chosen, as it would allow for <b>better coverage.</b><br><br>
 
-						<b>---- NEXT ----</b><br>
-						We should be able to get at simple overview of the power consumption of the system.
-						This would allow us to do more effective power consumption measurements.<br><br>
+						We should be able to get a <b>simple overview</b> of the <b>power consumption</b> of the system.<br>
+						This would aid us in <b>reducing the power consumption.</b><br><br>
 
-						<b>---- NEXT ----</b><br>
-						Finally we want to optimize the system on different parameters, this should be the order of importance when selecting components and creating the code.<br><br>
+						We also want to <b>optimize the project</b> for different parameters, these are <b>range, power consumption, and modularity.</b><br>
+						This should be the <b>order of importance</b> when <b>selecting components</b> and <b>writing the code.</b><br><br>
 
-						<b>---- NEXT ----</b><br>
-						First is the range of the communication.<br><br>
-
-						<b>---- NEXT ----</b><br>
-						Next is the power consumption of the system.<br><br>
-
-						<b>---- NEXT ----</b><br>
-						Finally, the modularity of the system.<br><br>
-
-						This order was chosen as we wanted a system we can use in many different situations, for a long time, and which is extendable.
+						The reason <b>range is above power consumption</b> is that we want <b>good coverage</b>, otherwise short range networks would be better.
 					</aside>
 				</section>
 
@@ -317,22 +300,25 @@ td {
 				<section>
 					<h2 class="top-header">Picking Components</h2>
 					<ul>
-						<li class="fragment">STM32</li>
-						<li class="fragment">LR1110</li>
-						<li class="fragment">BC660K-GL</li>
+						<li>Needed components:
+							<ol>
+								<li>MCU</li>
+								<li>Communication</li>
+								<li>Tracker</li>
+							</ol></li>
+						<li>STM32</li>
+						<li>LR1110</li>
+						<li>BC660K-GL</li>
 					</ul>
 
 					<aside class="notes">
-						Based on the requirements, we need to first pick an MCU.<br><br>
+						<b>Three components are needed</b>, an <b>MCU</b>, a <b>communication device</b> and a <b>tracking device.</b><br><br>
 
-						<b>---- NEXT ----</b><br>
-						Based on trying to optimize for power consumption in both running and sleep mode, we chose to go with the STM32 line, specifically the STM32U0 and STM32U3.<br><br>
+						Based on trying to <b>optimize for power consumption</b> in <b>both running and sleep mode</b>, we chose to go with the STM32 line, specifically the <b>STM32U0 and STM32U3.</b><br><br>
 
-						<b>---- NEXT ----</b><br>
 						Then, to communicate over LoRa, we chose the LR1110, which will also be used for tracking, as it contains a WiFi and GNSS receiver.
 						Because of this, we need to always have the LR1110 on the project, to get it to work.<br><br>
 
-						<b>---- NEXT ----</b><br>
 						Finally, we have the BC660K-GL, which we use for NB communication.
 					</aside>
 				</section>
@@ -550,8 +536,8 @@ td {
 						<li>Accuracy of tracking</li>
 						<li>Power consumption of settings
 							<ol>
-								<li class="fragment">Execution charge</li>
-								<li class="fragment">Average sleep current</li>
+								<li>Execution charge</li>
+								<li>Average sleep current</li>
 							</ol>
 						</li>
 					</ul>
@@ -576,7 +562,7 @@ td {
 						Results
 						<h3>Accuracy of Tracking</h3>
 					</h2>
-					<div class="r-stretch fragment">
+					<div class="r-stretch">
 						<table style="width: 100%" class="animate-zoom">
 							<tr>
 								<th>Dorm Inside</th>
@@ -1022,7 +1008,7 @@ td {
 					</h2>
 
 					<ul>
-						<li>Estimate charge of device in sleep mode
+						<li>Estimate average current of device in sleep mode
 							<ul>
 								<li>MCU: 16nA</li>
 								<li>LR1110: 1.6μA</li>
