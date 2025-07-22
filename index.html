@@ -227,15 +227,15 @@ td {
 					<h2 class="top-header">Introduction</h2>
 					<ul>
 						<li>Goal - Creating a theoretical tracking platform</li>
-						<li class="fragment">Motivation - Why design a low power tracker?</li>
-						<li class="fragment">
+						<li>Motivation - Why design a low power tracker?</li>
+						<li>
 							Developing the tracker
 							<ul>
 								<li>Writing Code</li>
 								<li>Creating PCB</li>
 							</ul>
 						</li>
-						<li class="fragment">Profiling program</li>
+						<li>Profiling program</li>
 					</ul>
 
 					<aside class="notes">
@@ -336,7 +336,7 @@ td {
 								<li>Exit</li>
 							</ol>
 						</li>
-						<li class="fragment">Program flow using #define</li>
+						<li>Program flow using #define</li>
 					</ul>
 
 					<aside class="notes">
@@ -407,7 +407,7 @@ td {
 						</ol>
 					</div>
 					<div style="width: 50%; float: left">
-						<img src="images/tracker-flowchart-location.svg" width="100%">
+						<img src="images/tracker-flowchart-location.svg" width="90%">
 					</div>
 
 					<aside class="notes">
@@ -429,7 +429,7 @@ td {
 						</ol>
 					</div>
 					<div style="width: 50%; float: left">
-						<img src="images/tracker-flowchart-send-lora.svg" width="100%">
+						<img src="images/tracker-flowchart-send-lora.svg" width="80%">
 					</div>
 
 					<aside class="notes">
@@ -472,7 +472,7 @@ td {
 						</ol>
 					</div>
 					<div style="width: 50%; float: left">
-						<img src="images/tracker-flowchart-end.svg" width="60%">
+						<img src="images/tracker-flowchart-end.svg" width="50%">
 					</div>
 
 					<aside class="notes">
@@ -485,8 +485,8 @@ td {
 					<ul>
 						<li>Different sleep modes used different places:
 							<ol>
-								<li class="fragment">Waiting for LR1110 communication</li>
-								<li class="fragment">Sleeping at the end after execution is done</li>
+								<li>Waiting for LR1110 communication</li>
+								<li>Sleeping at the end after execution is done</li>
 							</ol>
 						</li>
 					</ul>
@@ -507,7 +507,7 @@ td {
 				<!--- Profiling Code --->
 				<section>
 					<h2 class="top-header">Profiling Code</h2>
-					<img src="/images/profiling-program.svg">
+					<img src="/images/profiling-program.svg" width="90%">
 
 					<aside class="notes">
 						One of the requirements was to easily profile code and find which parts of the code consume the most power.
@@ -533,7 +533,12 @@ td {
 					</h2>
 
 					<ul>
-						<li>Accuracy of tracking</li>
+						<li>Accuracy of tracking
+							<ul>
+								<li>WiFi scanning and phone GPS</li>
+								<li>No GNSS scanning</li>
+							</ul>
+						</li>
 						<li>Power consumption of settings
 							<ol>
 								<li>Execution charge</li>
@@ -906,14 +911,14 @@ td {
 					</h2>
 
 					<ul>
-						<li class="fragment">Compiler flags</li>
-						<li class="fragment">Pull-up on NSS</li>
-						<li class="fragment">Sleeping/busy waiting</li>
-						<li class="fragment">Resetting devices</li>
-						<li class="fragment">Leaving and suspending</li>
-						<li class="fragment">Waiting for TX window</li>
-						<li class="fragment">Clock frequencies</li>
-						<li class="fragment">Supply voltage</li>
+						<li>Compiler flags</li>
+						<li>Pull-up on NSS</li>
+						<li>Sleeping/busy waiting</li>
+						<li>Resetting devices</li>
+						<li>Leaving and suspending</li>
+						<li>Waiting for TX window</li>
+						<li>Clock frequencies</li>
+						<li>Supply voltage</li>
 					</ul>
 
 					<aside class="notes">
@@ -1172,11 +1177,11 @@ td {
 					<ul>
 						<li>More tests of accuracy</li>
 						<li>Missing power measurements</li>
-						<li>Program improvements</li>
-						<li>LR1110 Firmware</li>
 						<li>Get BC660K-GL to work</li>
 						<li>Using other device for NB</li>
 						<li>GetTime from BC660K-GL</li>
+						<li>LR1110 Firmware</li>
+						<li>Program improvements</li>
 						<li>PCB improvements</li>
 					</ul>
 
@@ -1189,11 +1194,11 @@ td {
 					<ul>
 						<li class="gray-out">More tests of accuracy</li>
 						<li class="gray-out">Missing power measurements</li>
-						<li class="gray-out">Program improvements</li>
-						<li class="gray-out">LR1110 Firmware</li>
 						<li>Get BC660K-GL to work</li>
 						<li>Using other device for NB</li>
 						<li class="gray-out">GetTime from BC660K-GL</li>
+						<li class="gray-out">LR1110 Firmware</li>
+						<li class="gray-out">Program improvements</li>
 						<li class="gray-out">PCB improvements</li>
 					</ul>
 
@@ -1207,11 +1212,11 @@ td {
 					<ul>
 						<li class="gray-out">More tests of accuracy</li>
 						<li class="gray-out">Missing power measurements</li>
-						<li class="gray-out">Program improvements</li>
-						<li>LR1110 Firmware</li>
 						<li class="gray-out">Get BC660K-GL to work</li>
 						<li class="gray-out">Using other device for NB</li>
 						<li class="gray-out">GetTime from BC660K-GL</li>
+						<li>LR1110 Firmware</li>
+						<li class="gray-out">Program improvements</li>
 						<li class="gray-out">PCB improvements</li>
 					</ul>
 
@@ -1225,11 +1230,11 @@ td {
 					<ul>
 						<li class="gray-out">More tests of accuracy</li>
 						<li class="gray-out">Missing power measurements</li>
-						<li>Program improvements</li>
-						<li class="gray-out">LR1110 Firmware</li>
 						<li class="gray-out">Get BC660K-GL to work</li>
 						<li class="gray-out">Using other device for NB</li>
 						<li class="gray-out">GetTime from BC660K-GL</li>
+						<li class="gray-out">LR1110 Firmware</li>
+						<li>Program improvements</li>
 						<li class="gray-out">PCB improvements</li>
 					</ul>
 
@@ -1255,6 +1260,9 @@ td {
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
+
+				width: 1920,
+				height: 1080,
 
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
