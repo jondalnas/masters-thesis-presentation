@@ -241,21 +241,21 @@ td {
 					<aside class="notes">
 						The goal of this project was to create a tracking device platform, which is a theoretical device other people could use in their projects.
 						This includes not only a prototype, which they can use as a basis for their project, but also an analysis of its performance.
-						This platform should allow for reasonable tracking accuracy, and it should be optimized for power consumption.
+						This platform should allow for reasonable tracking accuracy, and it should be optimized for power consumption.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						Why do we want to create this platform?
 						There are two main reasons, there is a need for trackers and tracking techniques are rarely optimized for power, but accuracy.
 						This leads to an interesting analysis with a trade-off between accuracy and power, which is rarely discussed.
 						This could also lead to new breakthroughs in power consumption optimizations.
-						For this, we would need to develop a tracker.
+						For this, we would need to develop a tracker.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						The tracker consists of two parts, writing the code for it and creating the PCB.
 						The order of this is important, as we might discover things about the chips when developing and profiling the code.
-						This was broken in our project, and the consequences will be discussed later.
+						This was broken in our project, and the consequences will be discussed later.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						To be able to develop power efficient code, we also need a way to profile it.
 						We have therefor chosen to develop a program for this.
 					</aside>
@@ -279,35 +279,35 @@ td {
 					</ul>
 
 					<aside class="notes">
-						Before developing the tracker, we have to define some requirements.
+						Before developing the tracker, we have to define some requirements.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						First, the accuracy of the tracker should be within 50m.
-						This was chosen as within 50m you would be able to locate most devices.
+						This was chosen as within 50m you would be able to locate most devices.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						It should be able to keep running for at least 10 years on a single CR2032 battery.
-						10 years were chosen, as this is the target of most LPWAN devices.
+						10 years were chosen, as this is the target of most LPWAN devices.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						It should be able to connect to the network from at least 10km away.
-						This limits our possible communication protocols to long range communication, meaning we can expect battery coverage without pre-setup infrastructure.
+						This limits our possible communication protocols to long range communication, meaning we can expect battery coverage without pre-setup infrastructure.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						We should be able to get at simple overview of the power consumption of the system.
-						This would allow us to do more effective power consumption measurements.
+						This would allow us to do more effective power consumption measurements.<br><br>
 
-						<b>---- NEXT ----</b>
-						Finally we want to optimize the system on different parameters, this should be the order of importance when selecting components and creating the code.
+						<b>---- NEXT ----</b><br>
+						Finally we want to optimize the system on different parameters, this should be the order of importance when selecting components and creating the code.<br><br>
 
-						<b>---- NEXT ----</b>
-						First is the range of the communication.
+						<b>---- NEXT ----</b><br>
+						First is the range of the communication.<br><br>
 
-						<b>---- NEXT ----</b>
-						Next is the power consumption of the system.
+						<b>---- NEXT ----</b><br>
+						Next is the power consumption of the system.<br><br>
 
-						<b>---- NEXT ----</b>
-						Finally, the modularity of the system.
+						<b>---- NEXT ----</b><br>
+						Finally, the modularity of the system.<br><br>
 
 						This order was chosen as we wanted a system we can use in many different situations, for a long time, and which is extendable.
 					</aside>
@@ -323,16 +323,16 @@ td {
 					</ul>
 
 					<aside class="notes">
-						Based on the requirements, we need to first pick an MCU.
+						Based on the requirements, we need to first pick an MCU.<br><br>
 
-						<b>---- NEXT ----</b>
-						Based on trying to optimize for power consumption in both running and sleep mode, we chose to go with the STM32 line, specifically the STM32U0 and STM32U3.
+						<b>---- NEXT ----</b><br>
+						Based on trying to optimize for power consumption in both running and sleep mode, we chose to go with the STM32 line, specifically the STM32U0 and STM32U3.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						Then, to communicate over LoRa, we chose the LR1110, which will also be used for tracking, as it contains a WiFi and GNSS receiver.
-						Because of this, we need to always have the LR1110 on the project, to get it to work.
+						Because of this, we need to always have the LR1110 on the project, to get it to work.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						Finally, we have the BC660K-GL, which we use for NB communication.
 					</aside>
 				</section>
@@ -354,9 +354,9 @@ td {
 					</ul>
 
 					<aside class="notes">
-						The program consists of 5 main parts: Initialization, Join network, Scanning location, Send data, and exit.
+						The program consists of 5 main parts: Initialization, Join network, Scanning location, Send data, and exit.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						Each part of the code does a specific task.
 						This task will change based on what we want to program to do.
 						To do this we use defines to mask out specific parts of the code at compile time.
@@ -427,7 +427,7 @@ td {
 					<aside class="notes">
 						Location scanning can be done with WiFi or GNSS.
 						First we initiate the scanning, then we wait for a response.
-						The GNSS scanning might return that there are no satellites, if this happens, we scan and wait again.
+						The GNSS scanning might return that there are no satellites, if this happens, we scan and wait again.<br><br>
 
 						This is not split into two paths, as we allow both WiFi and GNSS scanning.
 					</aside>
@@ -448,12 +448,12 @@ td {
 
 					<aside class="notes">
 						We then send the scanned data.
-						This is done over LoRa or NB.
+						This is done over LoRa or NB.<br><br>
 
 						For LoRa we first check if we have joined the network, if it failed, we try again until we succeed.
 						We then try to send the data, first we check how many times we have failed at sending the data, if this is greater than our counter, we leave the network and rejoin.
 						We then send the WiFi or GNSS data.
-						If we failed, then we try again from the beginning, otherwise we continue.
+						If we failed, then we try again from the beginning, otherwise we continue.<br><br>
 
 						This loop is created to harden the code, as we noticed when testing the system, it might sometimes be unable to send the data, at which point re-joining the network helped.
 					</aside>
@@ -506,13 +506,13 @@ td {
 					</ul>
 
 					<aside class="notes">
-						There are two part of the code where we sleep, at the end and when waiting for the LR1110 to communicate.
+						There are two part of the code where we sleep, at the end and when waiting for the LR1110 to communicate.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						Waiting for the LR1110 should keep the program counter valid, which means we have to retain RAM and registers.
-						Because of this, we can only enter XXX sleep.
+						Because of this, we can only enter XXX sleep.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						The final sleep should consume the least amount of power, therefor XXX sleep mode is used.
 						This also has the effect of clearing RAM and resetting the program, thus we do not have to free any pointers or create an infinite while loop.
 					</aside>
@@ -525,15 +525,15 @@ td {
 
 					<aside class="notes">
 						One of the requirements was to easily profile code and find which parts of the code consume the most power.
-						To do this, we created a program, which can take the measurements and code, and display the charge consumption per line.
+						To do this, we created a program, which can take the measurements and code, and display the charge consumption per line.<br><br>
 
 						This means we would first need to convert the code into specific sections.
 						Then we need to convert the measurements into the consumption for each of these sections.
 						We use two different scripts for this, one for converting code and the other for collecting measurements.
-						Then a separate script was created, which could display these as the background color of the code.
+						Then a separate script was created, which could display these as the background color of the code.<br><br>
 
 						The colors represent the fraction of how much a line takes to execute compared to the total charge consumed.
-						This fraction is then gamma corrected, to make small differences in the not-so power consuming section be more visible.
+						This fraction is then gamma corrected, to make small differences in the not-so power consuming section be more visible.<br><br>
 
 						The user can also highlight a line of code to get the charge consumed at that line at the bottom of the window.
 					</aside>
@@ -557,14 +557,16 @@ td {
 					</ul>
 
 					<aside class="notes">
-						Based on the requirements, we want to know two things: The accuracy of the tracking and the power consumption of the system.
+						Based on the requirements, we want to know two things: The accuracy of the tracking and the power consumption of the system.<br><br>
 
-						For the tracking, we will look at how close the results are to some ground truth.
+						For the tracking, we will look at how close the results are to some ground truth.<br><br>
 
-						For the power, we want to know two things
-						<b>---- NEXT ----</b>
-						How much charge does the program take to execute, and
-						<b>---- NEXT ----</b>
+						For the power, we want to know two things<br><br>
+
+						<b>---- NEXT ----</b><br>
+						How much charge does the program take to execute, and<br><br>
+
+						<b>---- NEXT ----</b><br>
 						What is the average current of the system when it sleeps.
 						This can then be used calculate the estimated power battery life of the system.
 					</aside>
@@ -626,9 +628,9 @@ td {
 					</div>
 
 					<aside class="notes">
-						First of, the accuracy of the tracking can be visualized as placing all the measurements on a map, then looking how close they are to the truth.
+						First of, the accuracy of the tracking can be visualized as placing all the measurements on a map, then looking how close they are to the truth.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						First we place the ground truth value on the map, this can be seen as the red marker here.
 					</aside>
 				</section>
@@ -741,9 +743,9 @@ td {
 					</div>
 
 					<aside class="notes">
-						Then we place the GPS measurements on the same map, for this we need to zoom out.
+						Then we place the GPS measurements on the same map, for this we need to zoom out.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						On the map, the blue markers no represent the GPS measurements.
 					</aside>
 				</section>
@@ -856,12 +858,12 @@ td {
 					</div>
 
 					<aside class="notes">
-						Then we zoom out even further and place the WiFi scanning results on the map.
+						Then we zoom out even further and place the WiFi scanning results on the map.<br><br>
 
-						<b>---- NEXT ----</b>
-						These then represent how far away all the WiFi scanning measurements are from the ground truth as well as the GPS measurements.
+						<b>---- NEXT ----</b><br>
+						These then represent how far away all the WiFi scanning measurements are from the ground truth as well as the GPS measurements.<br><br>
 
-						Some interesting findings to note when looking at the data like this, is that the GPS data seem to be very close to each other and all agree on a center, however not always being on the ground truth.
+						Some interesting findings to note when looking at the data like this, is that the GPS data seem to be very close to each other and all agree on a center, however not always being on the ground truth.<br><br>
 
 						The WiFi scannings seem to spread more, with the measurements being focused mostly on roads or publicly accessible places.
 						This is especially noticeable when looking at the dorm measurements.
@@ -879,13 +881,13 @@ td {
 					</div>
 
 					<aside class="notes">
-						What you might have noticed is that we are missing one data set, that being the forest measurements.
+						What you might have noticed is that we are missing one data set, that being the forest measurements.<br><br>
 
-						First of all, the measurements were taken right here, next to a lake, in a foresty area.
+						First of all, the measurements were taken right here, next to a lake, in a foresty area.<br><br>
 
-						<b>---- NEXT ----</b>
+						<b>---- NEXT ----</b><br>
 						The GPS measurements show that most of the measurements were focused on the correct spot, however with a few outliers being spread quite a lot.
-						This spread was probably due to the foliage above the phone.
+						This spread was probably due to the foliage above the phone.<br><br>
 
 						We can also see, that no WiFi measurement data was able to be taken when at this location, as we were too far away from any access point.
 					</aside>
@@ -899,13 +901,13 @@ td {
 					<img src="/images/wifi-accuracy.svg"></img>
 
 					<aside class="notes">
-						If we collect the data, we can see that the GPS is generally more accurate than the WiFi scanning.
+						If we collect the data, we can see that the GPS is generally more accurate than the WiFi scanning.<br><br>
 
 						This graph represents the error of each of the measurements, for WiFi and GPS, in meters.
 						The graph is logarithmic on the y-axis to compress the data better.
-						Increasing the accuracy means decreasing the distance, and thus the lower the bar the better.
+						Increasing the accuracy means decreasing the distance, and thus the lower the bar the better.<br><br>
 
-						The one measurement from the forest is indeed very inaccurate for the GPS, however the WiFi is just not there.
+						The one measurement from the forest is indeed very inaccurate for the GPS, however the WiFi is just not there.<br><br>
 						
 						From this, we see that the best places to use WiFi scanning is places with a lot of access points and roads nearby, this is usually indoors.
 						For GPS, the data seems to be affected a lot by direct coverage by foliage or roof and how close you are to buildings.
@@ -929,22 +931,22 @@ td {
 					</ul>
 
 					<aside class="notes">
-						For the power consumption, the settings tested are:
-						<b>---- NEXT ----</b>
-						Compiler flags
-						<b>---- NEXT ----</b>
-						Adding a Pull-up on NSS
-						<b>---- NEXT ----</b>
-						Sleeping vs busy waiting when waiting for the LR1110
-						<b>---- NEXT ----</b>
-						Resetting devices between executions
-						<b>---- NEXT ----</b>
-						Leaving and suspending the LR1110 connection 
-						<b>---- NEXT ----</b>
-						Waiting for the TX receive window
-						<b>---- NEXT ----</b>
-						Different clock frequencies
-						<b>---- NEXT ----</b>
+						For the power consumption, the settings tested are:<br>
+						<b>---- NEXT ----</b><br>
+						Compiler flags<br>
+						<b>---- NEXT ----</b><br>
+						Adding a Pull-up on NSS<br>
+						<b>---- NEXT ----</b><br>
+						Sleeping vs busy waiting when waiting for the LR1110<br>
+						<b>---- NEXT ----</b><br>
+						Resetting devices between executions<br>
+						<b>---- NEXT ----</b><br>
+						Leaving and suspending the LR1110 connection <br>
+						<b>---- NEXT ----</b><br>
+						Waiting for the TX receive window<br>
+						<b>---- NEXT ----</b><br>
+						Different clock frequencies<br>
+						<b>---- NEXT ----</b><br>
 						Changing voltage
 					</aside>
 				</section>
@@ -957,13 +959,13 @@ td {
 					<img src="/images/power.svg">
 
 					<aside class="notes">
-						Plotting these results, we get the following graph, with the total consumed charge for one execution of the program on the y-axis.
+						Plotting these results, we get the following graph, with the total consumed charge for one execution of the program on the y-axis.<br><br>
 
 						The most noticeable conclusion we can draw, is that optimizing the program has almost no effect on the power consumption.
 						However, minimizing the time spent awake, and thus the time the LR1110 is active, seems to have an impact.
-						Leaving the network seems to have a little impact, and not waiting seems to have an even bigger.
+						Leaving the network seems to have a little impact, and not waiting seems to have an even bigger.<br><br>
 
-						Suspending the modem seems to take more charge then leaving, or even not doing anything.
+						Suspending the modem seems to take more charge then leaving, or even not doing anything.<br><br>
 
 						There is a dip in charge consumed when optimizing the code at -O1, this will be discussed later.
 					</aside>
@@ -977,7 +979,7 @@ td {
 					<img src="/images/sleep.svg">
 
 					<aside class="notes">
-						We can also plot the average current consumption when sleeping, this is show in the following graph, where the average sleep current is on the y-axis.
+						We can also plot the average current consumption when sleeping, this is show in the following graph, where the average sleep current is on the y-axis.<br><br>
 
 						We can see that adding a pull-up resistor on NSS increases the current consumption, while leaving the network decreases it again.
 						Suspending the modem seems to have almost no effect.
@@ -992,7 +994,7 @@ td {
 					<img src="/images/freq.svg">
 
 					<aside class="notes">
-						We can also see the effects of frequency on the charge consumed in this graph.
+						We can also see the effects of frequency on the charge consumed in this graph.<br><br>
 
 						This shows that a minimum can be found, when setting the clock speed to 524kHz.
 					</aside>
@@ -1006,9 +1008,9 @@ td {
 					<img src="/images/voltage.svg">
 
 					<aside class="notes">
-						Finally, the effects of changing the voltage on the charge consumption can be seen in this figure.
+						Finally, the effects of changing the voltage on the charge consumption can be seen in this figure.<br><br>
 
-						The measurements were taken on the PCB we developed, since we know the voltage it can support.
+						The measurements were taken on the PCB we developed, since we know the voltage it can support.<br><br>
 
 						This shows that skipping listening for LoRa response makes sense, while dropping the voltage does decrease the charge in normal execution, while almost not changing when skipping listening.
 					</aside>
@@ -1039,9 +1041,9 @@ td {
 					<aside class="notes">
 						Because we did not have a pull-up resistor on NSS, we were unable to measure the average current consumption on the PCB.
 						Therefor we calculated the maximal charge consumed by the LR1110 and the MCU in low power mode.
-						This gave us an estimate of the average power consumption, which is around 1.616uA.
+						This gave us an estimate of the average power consumption, which is around 1.616uA.<br><br>
 
-						We also need the execution time of our program, which is around 29.2s.
+						We also need the execution time of our program, which is around 29.2s.<br><br>
 
 						Then we can calculate the average current consumption needed to achieve a 10 year battery life, that being 2.566uA.
 						Finally, the waiting period between executions can be calculated, that being 3.93 days.
@@ -1102,13 +1104,13 @@ td {
 						On the charge consumption, we can see that compiler flags seem to have no real effect, with the exception of using -O1.
 						Since this is counterintuitive, more measurements would be needed before a definitive answer can be given.
 						Some explanations would be that greater optimizations would make some parts of the code too fast, which means we would need to wait for the LR1110 more.
-						The other explanation would be that optimization flags do not care about power, only execution time, since some flags might change the code to use more energy intensive instructions, this could increase the power consumed.
+						The other explanation would be that optimization flags do not care about power, only execution time, since some flags might change the code to use more energy intensive instructions, this could increase the power consumed.<br><br>
 
 						Adding a PU on NSS increases the average current consumption when sleeping, however this is due to the LR1110 now periodically sending and receiving messages while the MCU sleeps.
 						We can combine this with leaving the network before sleeping, which removes this, and we can therefor see a great decrease in average charge consumed.
-						This does not affect the charge consumed when running at all.
+						This does not affect the charge consumed when running at all.<br><br>
 
-						We also found that not waiting for a response from the LoRa network, would decrease the charge consumed, this is due to us no longer receiving the first acknowledge from the server.
+						We also found that not waiting for a response from the LoRa network, would decrease the charge consumed, this is due to us no longer receiving the first acknowledge from the server.<br><br>
 
 						Finally, we found out that the optimal frequency for the MCU CPU was around 524kHz.
 						At this frequency, we execute the code fast enough for the LR1110 to not be wasting time unnecessarily, without wasting power more than necessary when sleeping.
@@ -1132,10 +1134,10 @@ td {
 
 					<aside class="notes">
 						Looking at the supply voltage graph, we see that reducing the voltage from 3.3V to 2.5V gives a noticeable decrease in charge consumed.
-						This effect was not noticed as much when not waiting for RX response, which is probably due to it not being able to receive any packages.
+						This effect was not noticed as much when not waiting for RX response, which is probably due to it not being able to receive any packages.<br><br>
 
 						We were also unable to measure the sleep current on the final PCB, as we did not have a PU on the NSS pin.
-						This means the results are not as accurate as they do not account for all other components and swings in the current consumption.
+						This means the results are not as accurate as they do not account for all other components and swings in the current consumption.<br><br>
 
 						From the estimated battery lifetime, we found that a sleep period of about 4 days would be needed, this is a little longer than what could be considered useable.
 						We could add more batteries to reduce this period, with 4 batteries reducing it down to 1 day between executions.
@@ -1155,10 +1157,10 @@ td {
 					</ul>
 
 					<aside class="notes">
-						We were able to create a prototype of a tracker, which could last for 10 years of a single CR2032 battery, however only if we can accept a period of 4 days.
+						We were able to create a prototype of a tracker, which could last for 10 years of a single CR2032 battery, however only if we can accept a period of 4 days.<br><br>
 
 						To help with optimizing the power consumption, we were able to create a program, which can visualize the charge consumed at each line.
-						This program was successfully deployed and significant optimizations were made.
+						This program was successfully deployed and significant optimizations were made.<br><br>
 
 						The tracker was able to communicate over protocols, which in theory should support up to 10km range.
 						This was not experimentally concluded however.
