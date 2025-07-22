@@ -176,12 +176,12 @@ td {
 	left: 0%;
 	z-index: 500;
 	transform: translate(0%, -50%);
-}
+}*/
 
-.slides>section {
+.slides>section:not(.original) {
 	width: 100%;
 	height: 100%;
-}*/
+}
 
 .bigger-text {
 	font-size: 40pt;
@@ -192,16 +192,20 @@ td {
 	width: 50%;
 	float: left;
 }
+
+.gray-out {
+	color: lightgray;
+}
 		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
 				<!--- First Slide --->
-				<section>
+				<section class="original">
 					<h2>
 						Development and implementation of embedded low-power tracking platform
-						<h3>Master's Defence 2025</h3>
+						<h3>Master's Defense 2025</h3>
 					</h2>
 					<p><nobr>Jonas Birkedal Dudal Jensen (s203849)</nobr></p>
 				</section>
@@ -237,34 +241,34 @@ td {
 					<aside class="notes">
 						The goal of this project was to create a tracking device platform, which is a theoretical device other people could use in their projects.
 						This includes not only a prototype, which they can use as a basis for their project, but also an analysis of its performance.
-						This platform should allow for resonable tracking accuracy and it should be optimized for power consumption.
+						This platform should allow for reasonable tracking accuracy, and it should be optimized for power consumption.
 
 						<b>---- NEXT ----</b>
 						Why do we want to create this platform?
 						There are two main reasons, there is a need for trackers and tracking techniques are rarely optimized for power, but accuracy.
-						This leads to an interesting analysis with a traid-off between accuracy and power, which is rarely discussed.
-						This could also lead to new break-throughs in power consumption optimizations.
+						This leads to an interesting analysis with a trade-off between accuracy and power, which is rarely discussed.
+						This could also lead to new breakthroughs in power consumption optimizations.
 						For this, we would need to develop a tracker.
 
 						<b>---- NEXT ----</b>
 						The tracker consists of two parts, writing the code for it and creating the PCB.
-						The order of this is important, as we might descover things about the chips when developing and profiling the code.
+						The order of this is important, as we might discover things about the chips when developing and profiling the code.
 						This was broken in our project, and the consequences will be discussed later.
 
 						<b>---- NEXT ----</b>
-						To be able to develop power effecient code, we also need a way to profile it.
+						To be able to develop power efficient code, we also need a way to profile it.
 						We have therefor chosen to develop a program for this.
 					</aside>
 				</section>
 
 				<!--- Requirements --->
 				<section>
-					<h2 class="top-header">Requrements</h2>
+					<h2 class="top-header">Requirements</h2>
 					<ul>
 						<li class="fragment">Tracking accuracy: 50m</li>
 						<li class="fragment">Battery-lifetime: 10 years</li>
 						<li class="fragment">Communication range: 10km</li>
-						<li class="fragment">Simple visulization of power consumption</li>
+						<li class="fragment">Simple visualization of power consumption</li>
 						<li class="fragment">Optimizations
 							<ol>
 								<li class="fragment">Range of communication</li>
@@ -287,14 +291,14 @@ td {
 
 						<b>---- NEXT ----</b>
 						It should be able to connect to the network from at least 10km away.
-						This limits our possible communication protocols to long range communication, meaning we can expect bettery coverage without pre-setup infrastructure.
+						This limits our possible communication protocols to long range communication, meaning we can expect battery coverage without pre-setup infrastructure.
 
 						<b>---- NEXT ----</b>
 						We should be able to get at simple overview of the power consumption of the system.
-						This would allow us to do more effective power consumption measurments.
+						This would allow us to do more effective power consumption measurements.
 
 						<b>---- NEXT ----</b>
-						Finally we want to optimize the system on different parameters, this should be the order of importans when selecting components and creating the code.
+						Finally we want to optimize the system on different parameters, this should be the order of importance when selecting components and creating the code.
 
 						<b>---- NEXT ----</b>
 						First is the range of the communication.
@@ -325,7 +329,7 @@ td {
 						Based on trying to optimize for power consumption in both running and sleep mode, we chose to go with the STM32 line, specifically the STM32U0 and STM32U3.
 
 						<b>---- NEXT ----</b>
-						Then, to communicate over LoRa, we chose the LR1110, which will also be used for tracking, as it contains a WiFi and GNSS reciever.
+						Then, to communicate over LoRa, we chose the LR1110, which will also be used for tracking, as it contains a WiFi and GNSS receiver.
 						Because of this, we need to always have the LR1110 on the project, to get it to work.
 
 						<b>---- NEXT ----</b>
@@ -356,7 +360,7 @@ td {
 						Each part of the code does a specific task.
 						This task will change based on what we want to program to do.
 						To do this we use defines to mask out specific parts of the code at compile time.
-						This allows for more effecient execution compared to using normal if-statements, as masking out the code will not create any aditional code.
+						This allows for more efficient execution compared to using normal if-statements, as masking out the code will not create any additional code.
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
@@ -395,7 +399,7 @@ td {
 
 					<aside class="notes">
 						Joining the network is split into two paths: Joining LoRa or connecting to MQTT.
-						The LoRa part does not guarentee that we are connected, this is checked later on.
+						The LoRa part does not guarantee that we are connected, this is checked later on.
 						This allows us to initiate the scanning without having to wait for a response.
 					</aside>
 				</section>
@@ -423,7 +427,7 @@ td {
 					<aside class="notes">
 						Location scanning can be done with WiFi or GNSS.
 						First we initiate the scanning, then we wait for a response.
-						The GNSS scanning might return that there are no sateliets, if this happens, we scan and wait again.
+						The GNSS scanning might return that there are no satellites, if this happens, we scan and wait again.
 
 						This is not split into two paths, as we allow both WiFi and GNSS scanning.
 					</aside>
@@ -445,7 +449,7 @@ td {
 					<aside class="notes">
 						We then send the scanned data.
 						This is done over LoRa or NB.
-						
+
 						For LoRa we first check if we have joined the network, if it failed, we try again until we succeed.
 						We then try to send the data, first we check how many times we have failed at sending the data, if this is greater than our counter, we leave the network and rejoin.
 						We then send the WiFi or GNSS data.
@@ -469,7 +473,7 @@ td {
 
 					<aside class="notes">
 						Sending the data over NB is simply done by publishing the results to MQTT.
-						All error hanlding is done in the send function, because of how the we communicate with the BC660K-GL.
+						All error handling is done in the send function, because of how we communicate with the BC660K-GL.
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
@@ -505,7 +509,7 @@ td {
 						There are two part of the code where we sleep, at the end and when waiting for the LR1110 to communicate.
 
 						<b>---- NEXT ----</b>
-						Waiting for the LR1110 should keep the prgram counter valied, which means we have to retain RAM and registers.
+						Waiting for the LR1110 should keep the program counter valid, which means we have to retain RAM and registers.
 						Because of this, we can only enter XXX sleep.
 
 						<b>---- NEXT ----</b>
@@ -521,12 +525,12 @@ td {
 
 					<aside class="notes">
 						One of the requirements was to easily profile code and find which parts of the code consume the most power.
-						To do this, we created a program, which can take the measurments and code, and display the charge consumption per line.
+						To do this, we created a program, which can take the measurements and code, and display the charge consumption per line.
 
 						This means we would first need to convert the code into specific sections.
-						Then we need to convert the measurments into the consumption for each of these sections.
-						We use two different scripts for this, one for converting code and the other for collecting measurments.
-						Then a seperate script was created, which could display these as the background color of the code.
+						Then we need to convert the measurements into the consumption for each of these sections.
+						We use two different scripts for this, one for converting code and the other for collecting measurements.
+						Then a separate script was created, which could display these as the background color of the code.
 
 						The colors represent the fraction of how much a line takes to execute compared to the total charge consumed.
 						This fraction is then gamma corrected, to make small differences in the not-so power consuming section be more visible.
@@ -622,7 +626,7 @@ td {
 					</div>
 
 					<aside class="notes">
-						First of, the accuracy of the tracking can be visualized as placing all the measurments on a map, then looking how close they are to the truth.
+						First of, the accuracy of the tracking can be visualized as placing all the measurements on a map, then looking how close they are to the truth.
 
 						<b>---- NEXT ----</b>
 						First we place the ground truth value on the map, this can be seen as the red marker here.
@@ -737,10 +741,10 @@ td {
 					</div>
 
 					<aside class="notes">
-						Then we place the GPS measurments on the same map, for this we need to zoom out.
+						Then we place the GPS measurements on the same map, for this we need to zoom out.
 
 						<b>---- NEXT ----</b>
-						On the map, the blue markers no represent the GPS measurments.
+						On the map, the blue markers no represent the GPS measurements.
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
@@ -855,12 +859,12 @@ td {
 						Then we zoom out even further and place the WiFi scanning results on the map.
 
 						<b>---- NEXT ----</b>
-						These then represent how far away all the WiFi scanning measurments are from the ground truth as well as the GPS measurments.
+						These then represent how far away all the WiFi scanning measurements are from the ground truth as well as the GPS measurements.
 
 						Some interesting findings to note when looking at the data like this, is that the GPS data seem to be very close to each other and all agree on a center, however not always being on the ground truth.
 
-						The WiFi scannings seem to spread more, with the measurments being focused mostly on roads or publically accessable places.
-						This is especially noticible when looking at the dorm measurments.
+						The WiFi scannings seem to spread more, with the measurements being focused mostly on roads or publicly accessible places.
+						This is especially noticeable when looking at the dorm measurements.
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
@@ -875,15 +879,15 @@ td {
 					</div>
 
 					<aside class="notes">
-						What you might have noticed is that we are missing one data set, that being the forest measurments.
+						What you might have noticed is that we are missing one data set, that being the forest measurements.
 
-						First of all, the measurments were taken right here, next to a lake, in a foresty area.
+						First of all, the measurements were taken right here, next to a lake, in a foresty area.
 
 						<b>---- NEXT ----</b>
-						The GPS measurments show that most of the measurments were focused on the correct spot, however with a few outliers being spread quite a lot.
+						The GPS measurements show that most of the measurements were focused on the correct spot, however with a few outliers being spread quite a lot.
 						This spread was probably due to the foliage above the phone.
 
-						We can also see, that no WiFi measurment data was able to be taken when at this location, as we were too far away from any access point.
+						We can also see, that no WiFi measurement data was able to be taken when at this location, as we were too far away from any access point.
 					</aside>
 				</section>
 				<section data-auto-animate data-auto-animate-id="1">
@@ -897,11 +901,11 @@ td {
 					<aside class="notes">
 						If we collect the data, we can see that the GPS is generally more accurate than the WiFi scanning.
 
-						This graph represents the error of each of the measurments, for WiFi and GPS, in meters.
+						This graph represents the error of each of the measurements, for WiFi and GPS, in meters.
 						The graph is logarithmic on the y-axis to compress the data better.
 						Increasing the accuracy means decreasing the distance, and thus the lower the bar the better.
 
-						The one measurment from the forest is indeed very inaccuracte for the GPS, however the WiFi is just not there.
+						The one measurement from the forest is indeed very inaccurate for the GPS, however the WiFi is just not there.
 						
 						From this, we see that the best places to use WiFi scanning is places with a lot of access points and roads nearby, this is usually indoors.
 						For GPS, the data seems to be affected a lot by direct coverage by foliage or roof and how close you are to buildings.
@@ -937,7 +941,7 @@ td {
 						<b>---- NEXT ----</b>
 						Leaving and suspending the LR1110 connection 
 						<b>---- NEXT ----</b>
-						Waiting for the TX recieve window
+						Waiting for the TX receive window
 						<b>---- NEXT ----</b>
 						Different clock frequencies
 						<b>---- NEXT ----</b>
@@ -955,8 +959,8 @@ td {
 					<aside class="notes">
 						Plotting these results, we get the following graph, with the total consumed charge for one execution of the program on the y-axis.
 
-						The most noticible conclusion we can draw, is that optimizing the program has almost no effect on the power consumption.
-						However minimizing the time spent awake, and thus the time the LR1110 is active, seems to have an impact.
+						The most noticeable conclusion we can draw, is that optimizing the program has almost no effect on the power consumption.
+						However, minimizing the time spent awake, and thus the time the LR1110 is active, seems to have an impact.
 						Leaving the network seems to have a little impact, and not waiting seems to have an even bigger.
 
 						Suspending the modem seems to take more charge then leaving, or even not doing anything.
@@ -973,7 +977,7 @@ td {
 					<img src="/images/sleep.svg">
 
 					<aside class="notes">
-						We can also plot the average current consumption when sleeping, this is show in the following graph, where the average sleep curent is on the y-axis.
+						We can also plot the average current consumption when sleeping, this is show in the following graph, where the average sleep current is on the y-axis.
 
 						We can see that adding a pull-up resistor on NSS increases the current consumption, while leaving the network decreases it again.
 						Suspending the modem seems to have almost no effect.
@@ -1004,7 +1008,7 @@ td {
 					<aside class="notes">
 						Finally, the effects of changing the voltage on the charge consumption can be seen in this figure.
 
-						The measurments were taken on the PCB we developed, since we know the voltage it can support.
+						The measurements were taken on the PCB we developed, since we know the voltage it can support.
 
 						This shows that skipping listening for LoRa response makes sense, while dropping the voltage does decrease the charge in normal execution, while almost not changing when skipping listening.
 					</aside>
@@ -1040,12 +1044,12 @@ td {
 						We also need the execution time of our program, which is around 29.2s.
 
 						Then we can calculate the average current consumption needed to achieve a 10 year battery life, that being 2.566uA.
-						Finally the waiting period between executions can be calculated, that being 3.93 days.
+						Finally, the waiting period between executions can be calculated, that being 3.93 days.
 					</aside>
 				</section>
 
 				<!--- Discussion --->
-				<section>
+				<section data-auto-animate data-auto-animate-id="2">
 					<h2 class="top-header">Discussion</h2>
 					<h3>Tracking Accuracy</h3>
 
@@ -1053,7 +1057,7 @@ td {
 						<ul>
 							<li>GPS error lower than WiFi</li>
 							<li>GPS still inaccurate</li>
-							<li>Forrest measurments very inaccurate</li>
+							<li>Forrest measurements very inaccurate</li>
 						</ul>
 					</div>
 					<div class="split">
@@ -1064,10 +1068,10 @@ td {
 						In general, the WiFi results seem to be not very accurate, being around a factor 10 from GPS.
 						There seems to be some correlation between GPS and WiFi accuracy, where places with high GPS accuracy has low WiFi and vise-versa.
 						GPS works best when outside with a clear view of the sky, while WiFi works best close to many APs, which is usually indoors.
-						GPS seems to also have a problem with foleage and being close to buildings, as can be seen with the forest measurment and the DTU outside, which has clear view of the sky but was close to a wall.
+						GPS seems to also have a problem with foliage and being close to buildings, as can be seen with the forest measurement and the DTU outside, which has clear view of the sky but was close to a wall.
 					</aside>
 				</section>
-				<section>
+				<section data-auto-animate data-auto-animate-id="2">
 					<h2 class="top-header">Discussion</h2>
 					<h3>Power Consumption</h3>
 
@@ -1096,21 +1100,21 @@ td {
 
 					<aside class="notes">
 						On the charge consumption, we can see that compiler flags seem to have no real effect, with the exception of using -O1.
-						Since this is counterintuitive, more measurments would be needed before a definitive answer can be given.
+						Since this is counterintuitive, more measurements would be needed before a definitive answer can be given.
 						Some explanations would be that greater optimizations would make some parts of the code too fast, which means we would need to wait for the LR1110 more.
 						The other explanation would be that optimization flags do not care about power, only execution time, since some flags might change the code to use more energy intensive instructions, this could increase the power consumed.
 
-						Adding a PU on NSS increases the average current consumption when sleeping, however this is due to the LR1110 now periodically sending and receaving messages while the MCU sleeps.
-						We can combine this with leaving the network before sleeping, which removes this, and we can therefor see a great decrese in average charge consumed.
+						Adding a PU on NSS increases the average current consumption when sleeping, however this is due to the LR1110 now periodically sending and receiving messages while the MCU sleeps.
+						We can combine this with leaving the network before sleeping, which removes this, and we can therefor see a great decrease in average charge consumed.
 						This does not affect the charge consumed when running at all.
 
-						We also found that not waiting for a response from the LoRa network, would decrease the charge consumed, this is due to us no longer receaving the first acknowledge from the server.
+						We also found that not waiting for a response from the LoRa network, would decrease the charge consumed, this is due to us no longer receiving the first acknowledge from the server.
 
-						Finally we found out that the optimal frequency for the MCU CPU was around 524kHz.
-						At this frequency, we execute the code fast enough for the LR1110 to not be waisting time unnececerily, without waisting power more then nececerilly when sleeping.
+						Finally, we found out that the optimal frequency for the MCU CPU was around 524kHz.
+						At this frequency, we execute the code fast enough for the LR1110 to not be wasting time unnecessarily, without wasting power more than necessary when sleeping.
 					</aside>
 				</section>
-				<section>
+				<section data-auto-animate data-auto-animate-id="2">
 					<h2 class="top-header">Discussion</h2>
 					<h3>Battery-Lifetime</h3>
 
@@ -1127,36 +1131,128 @@ td {
 					</div>
 
 					<aside class="notes">
-						Looking at the supply voltage graph, we see that reducing the voltage from 3.3V to 2.5V gives a noticible decrease in charge consumed.
+						Looking at the supply voltage graph, we see that reducing the voltage from 3.3V to 2.5V gives a noticeable decrease in charge consumed.
 						This effect was not noticed as much when not waiting for RX response, which is probably due to it not being able to receive any packages.
 
 						We were also unable to measure the sleep current on the final PCB, as we did not have a PU on the NSS pin.
 						This means the results are not as accurate as they do not account for all other components and swings in the current consumption.
 
-						From the estimated battery lifetime, we found that a sleep period of about 4 days would be needed, this is a little longer than what could be concidered useable.
+						From the estimated battery lifetime, we found that a sleep period of about 4 days would be needed, this is a little longer than what could be considered useable.
 						We could add more batteries to reduce this period, with 4 batteries reducing it down to 1 day between executions.
-						If a shorter period is needed and we do not want to add aditional batteries, then we would have to live with a shorter battery lifetime.
+						If a shorter period is needed, and we do not want to add additional batteries, then we would have to live with a shorter battery lifetime.
 					</aside>
 				</section>
 
 				<!--- Conclusion --->
-				<section>
+				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">Conclusion</h2>
-					<p>Test</p>
+
+					<h3>Achieved</h3>
+					<ul>
+						<li>Battery life of 10 years</li>
+						<li>Simple visualization of power consumption</li>
+						<li>Communication range of 10km</li>
+					</ul>
 
 					<aside class="notes">
+						We were able to create a prototype of a tracker, which could last for 10 years of a single CR2032 battery, however only if we can accept a period of 4 days.
 
+						To help with optimizing the power consumption, we were able to create a program, which can visualize the charge consumed at each line.
+						This program was successfully deployed and significant optimizations were made.
+
+						The tracker was able to communicate over protocols, which in theory should support up to 10km range.
+						This was not experimentally concluded however.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">Conclusion</h2>
+
+					<h3>Somewhat Achieved</h3>
+					<ul>
+						<li>Tracking accuracy bellow 50m</li>
+					</ul>
+
+					<aside class="notes">
+						We were somewhat successful in getting a tracking accuracy below 50m, with WiFi scanning supporting this at some locations.
+						All measurements were bellow approximately 100m.
 					</aside>
 				</section>
 
 				<!--- Further Work --->
-				<section>
+				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">Further Work</h2>
-					<p>Test</p>
+					<ul>
+						<li>More tests of accuracy</li>
+						<li>Missing power measurements</li>
+						<li>Program improvements</li>
+						<li>LR1110 Firmware</li>
+						<li>Get BC660K-GL to work</li>
+						<li>Using other device for NB</li>
+						<li>GetTime from BC660K-GL</li>
+						<li>PCB improvements</li>
+					</ul>
 
 					<aside class="notes">
-
+						Many different improvements could be made, these include using more locations to do accuracy tests, and using other devices for NB.
 					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">Further Work</h2>
+					<ul>
+						<li class="gray-out">More tests of accuracy</li>
+						<li class="gray-out">Missing power measurements</li>
+						<li class="gray-out">Program improvements</li>
+						<li class="gray-out">LR1110 Firmware</li>
+						<li>Get BC660K-GL to work</li>
+						<li>Using other device for NB</li>
+						<li class="gray-out">GetTime from BC660K-GL</li>
+						<li class="gray-out">PCB improvements</li>
+					</ul>
+
+					<aside class="notes">
+						One of the more promising directions we can take the project would be to get the BC660K-GL to work on the PCB, so comparative measurements could be taken.
+						Also using a new chip for NB to get the SSL backend to work, meaning we could actually try to optimize its power consumption.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">Further Work</h2>
+					<ul>
+						<li class="gray-out">More tests of accuracy</li>
+						<li class="gray-out">Missing power measurements</li>
+						<li class="gray-out">Program improvements</li>
+						<li>LR1110 Firmware</li>
+						<li class="gray-out">Get BC660K-GL to work</li>
+						<li class="gray-out">Using other device for NB</li>
+						<li class="gray-out">GetTime from BC660K-GL</li>
+						<li class="gray-out">PCB improvements</li>
+					</ul>
+
+					<aside class="notes">
+						Another interesting thing to look at would be to implement the LR1110 firmware ourselves.
+						This could potentially save a lot of power, pre-baking settings and using ABP instead of OTAA.
+					</aside>
+				</section>
+				<section data-auto-animate data-auto-animate-id="1">
+					<h2 class="top-header">Further Work</h2>
+					<ul>
+						<li class="gray-out">More tests of accuracy</li>
+						<li class="gray-out">Missing power measurements</li>
+						<li>Program improvements</li>
+						<li class="gray-out">LR1110 Firmware</li>
+						<li class="gray-out">Get BC660K-GL to work</li>
+						<li class="gray-out">Using other device for NB</li>
+						<li class="gray-out">GetTime from BC660K-GL</li>
+						<li class="gray-out">PCB improvements</li>
+					</ul>
+
+					<aside class="notes">
+						Finally, we could improve the program, to make the control path less cluttered and easier to expand, by using defines, and we could use a watchdog timer to reset the MCU if it gets stuck somewhere.
+					</aside>
+				</section>
+
+				<!--- End --->
+				<section class="original">
+					<h2>Thank you for your time</h2>
 				</section>
 			</div>
 		</div>
