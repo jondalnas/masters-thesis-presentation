@@ -944,7 +944,7 @@ td {
 				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">
 						Results
-						<h3>Power Consumption</h3>
+						<h3>Power Consumption - Execution</h3>
 					</h2>
 
 					<img src="/images/power.svg">
@@ -964,7 +964,7 @@ td {
 				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">
 						Results
-						<h3>Power Consumption</h3>
+						<h3>Power Consumption - Sleep</h3>
 					</h2>
 
 					<img src="/images/sleep.svg">
@@ -979,7 +979,7 @@ td {
 				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">
 						Results
-						<h3>Power Consumption</h3>
+						<h3>Power Consumption - Frequency</h3>
 					</h2>
 
 					<img src="/images/freq.svg">
@@ -993,7 +993,7 @@ td {
 				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">
 						Results
-						<h3>Power Consumption</h3>
+						<h3>Power Consumption - PCB</h3>
 					</h2>
 
 					<img src="/images/voltage.svg">
@@ -1009,7 +1009,7 @@ td {
 				<section data-auto-animate data-auto-animate-id="1">
 					<h2 class="top-header">
 						Results
-						<h3>Power Consumption</h3>
+						<h3>Power Consumption - Battery</h3>
 					</h2>
 
 					<ul>
@@ -1113,9 +1113,15 @@ td {
 
 					<div class="split">
 						<ul>
-							<li>Charge decrease when reducing voltage</li>
+							<li>Charge decrease when reducing voltage on longer programs</li>
+							<li>When skipping listening, no charge reduction observed
+								<ul>
+									<li>Voltage reduction has no effect on WiFi scanning, which dominates when not waiting</li>
+									<li>Only one charge spike when transmitting data, which is the only reducable charge consumption</li>
+								</ul>
+							</li>
 							<li>Skip listening did not work, no package received</li>
-							<li>Sleep current estimated</li>
+							<li>Sleep current estimated, not measured</li>
 							<li>Sleep period very long, could be fixed with adding battery</li>
 						</ul>
 					</div>
