@@ -13,6 +13,11 @@
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
 
+		<script src="plugin/math/math.js"></script>
+		<script>
+			Reveal.initialize({ plugins: [RevealMath.KaTeX] });
+		</script>
+
 		<style>
 .image-zoom {
 	width: 100% !important;
@@ -210,18 +215,6 @@ td {
 					<p><nobr>Jonas Birkedal Dudal Jensen (s203849)</nobr></p>
 				</section>
 
-				<!--- Corrections --->
-				<section>
-					<h2 class="top-header">Corrections</h2>
-					<p>Test</p>
-
-					<aside class="notes">
-						Before moving into the main presentation, I want to make some quick corrections.
-
-
-					</aside>
-				</section>
-
 				<!--- Introduction --->
 				<section>
 					<h2 class="top-header">Introduction</h2>
@@ -229,13 +222,13 @@ td {
 						<li>Goal - Creating a theoretical tracking platform</li>
 						<li>Motivation - Why design a low power tracker?</li>
 						<li>
-							Developing the tracker
+							Developing the tracker: Two parts
 							<ul>
 								<li>Writing Code</li>
 								<li>Creating PCB</li>
 							</ul>
 						</li>
-						<li>Profiling program</li>
+						<li>Profiling program to optimize for charge consumption</li>
 					</ul>
 
 					<aside class="notes">
@@ -265,7 +258,7 @@ td {
 						<li>Battery-lifetime: 10 years</li>
 						<li>Communication range: 10km</li>
 						<li>Simple visualization of power consumption</li>
-						<li>Optimization parameters
+						<li>Three optimization parameters
 							<ol>
 								<li>Range of communication</li>
 								<li>Power consumption</li>
@@ -306,9 +299,9 @@ td {
 								<li>Communication</li>
 								<li>Tracker</li>
 							</ol></li>
-						<li>STM32</li>
-						<li>LR1110</li>
-						<li>BC660K-GL</li>
+						<li><b>STM32</b>: From a list of 3 lowest power MCUs</li>
+						<li><b>LR1110</b>: Because of low-power long range communication and low-power tracking</li>
+						<li><b>BC660K-GL</b>: Because we need to make sure the infrastructure exists in 10 years</li>
 					</ul>
 
 					<aside class="notes">
@@ -337,6 +330,7 @@ td {
 							</ol>
 						</li>
 						<li>Program flow using #define</li>
+						<li>The two sleeping modes</li>
 					</ul>
 
 					<aside class="notes">
@@ -483,10 +477,10 @@ td {
 					<h2 class="top-header">Program Implementation</h2>
 					<h3>Sleep</h3>
 					<ul>
-						<li>Different sleep modes used different places:
+						<li>Different sleep modes used in different places:
 							<ol>
-								<li>Waiting for LR1110 communication</li>
-								<li>Sleeping at the end after execution is done</li>
+								<li><b>Light sleep</b>: Waiting for LR1110 communication</li>
+								<li><b>Deep sleep</b>: Sleeping at the end after execution is done</li>
 							</ol>
 						</li>
 					</ul>
@@ -507,7 +501,17 @@ td {
 				<!--- Profiling Code --->
 				<section>
 					<h2 class="top-header">Profiling Code</h2>
-					<img src="/images/profiling-program.svg" width="90%">
+					<ul>
+						<li>Three scripts
+							<ol>
+								<li>Turn code into differentiable section</li>
+								<li>Turn measurements into sections</li>
+								<li>Display code and charge</li>
+							</ol>
+						</li>
+						<li>Measurements also include logic ports to link to specific sections</li>
+					</ul>
+					<img src="/images/profiling-program.svg" width="65%">
 
 					<aside class="notes">
 						One of the requirements was to easily profile code and find which parts of the code consume the most power.
@@ -536,14 +540,15 @@ td {
 						<li>Accuracy of tracking
 							<ul>
 								<li>WiFi scanning and phone GPS</li>
-								<li>No GNSS scanning</li>
+								<li><b>Missing</b> GNSS sat scanning</li>
 							</ul>
 						</li>
 						<li>Power consumption of settings
-							<ol>
-								<li>Execution charge</li>
+							<ul>
+								<li>Program execution charge</li>
 								<li>Average sleep current</li>
-							</ol>
+								<li><b>Missing</b> measurements of BC660K-GL (needs 5V)</li>
+							</ul>
 						</li>
 					</ul>
 
@@ -866,6 +871,12 @@ td {
 						<h3>Accuracy of Tracking</h3>
 					</h2>
 
+					<ul>
+						<li>Measurements were near lake under trees</li>
+						<li>Most measurements were correct, with some outliers</li>
+						<li>Missing WiFi scannings due to no AP</li>
+					</ul>
+
 					<div class="r-stack">
 						<img src="/images/forrest-gt.png">
 						<img class="fragment" src="/images/forrest-gps.png">
@@ -888,6 +899,13 @@ td {
 						Results
 						<h3>Accuracy of Tracking</h3>
 					</h2>
+
+					<ul>
+						<li>GPS more accurate than WiFi</li>
+						<li>Forrest measutement very inaccurate.</li>
+					</ul>
+
+					<br>
 
 					<img src="/images/wifi-accuracy.svg"></img>
 
@@ -947,6 +965,14 @@ td {
 						<h3>Power Consumption - Execution</h3>
 					</h2>
 
+					<ul>
+						<li>Optimizations flags have some effect - not much</li>
+						<li>Adding PU makes no difference, as expected</li>
+						<li>Leaving network slightly decreases charge</li>
+						<li>Not waiting drastically decreases charge</li>
+						<li>Measured on Development board - unable to do line-by-line analysis on PCB</li>
+					</ul>
+
 					<img src="/images/power.svg">
 
 					<aside class="notes">
@@ -967,6 +993,14 @@ td {
 						<h3>Power Consumption - Sleep</h3>
 					</h2>
 
+					<ul>
+						<li>Adding PU increases current, while leaving decreases it again</li>
+						<li>Suspending makes little difference</li>
+						<li>Not waiting makes no difference</li>
+					</ul>
+
+					<br>
+
 					<img src="/images/sleep.svg">
 
 					<aside class="notes">
@@ -982,6 +1016,12 @@ td {
 						<h3>Power Consumption - Frequency</h3>
 					</h2>
 
+					<ul>
+						<li>Dip around 524kHz, then increases</li>
+					</ul>
+
+					<br>
+
 					<img src="/images/freq.svg">
 
 					<aside class="notes">
@@ -995,6 +1035,14 @@ td {
 						Results
 						<h3>Power Consumption - PCB</h3>
 					</h2>
+
+					<ul>
+						<li>Measurements taken with PCB</li>
+						<li>Charge decreases with voltage</li>
+						<li>Effects not as noticeable when not waiting</li>
+					</ul>
+					
+					<br>
 
 					<img src="/images/voltage.svg">
 
@@ -1028,6 +1076,14 @@ td {
 						</li>
 						<li>Calculate average current for CR2032: 2.566μA</li>
 						<li>Calculate period: 3.93 days</li>
+					</ul>
+
+					<div style="float: left; width: 50%;">
+						<img src="images/battery-current-equation.png"/>
+					</div>
+					<div style="float:left; width: 50%;">
+						<img src="images/battery-wait-equation.png"/>
+					</div>
 
 					<aside class="notes">
 						Because we did not have a pull-up resistor on NSS, we were unable to measure the average current consumption on the PCB.
@@ -1117,12 +1173,12 @@ td {
 							<li>When skipping listening, no charge reduction observed
 								<ul>
 									<li>Voltage reduction has no effect on WiFi scanning, which dominates when not waiting</li>
-									<li>Only one charge spike when transmitting data, which is the only reducable charge consumption</li>
+									<li>Only one charge spike when transmitting data, which is the only meaningful charge consumption</li>
 								</ul>
 							</li>
 							<li>Skip listening did not work, no package received</li>
 							<li>Sleep current estimated, not measured</li>
-							<li>Sleep period very long, could be fixed with adding battery</li>
+							<li>Sleep period very long, could be fixed by adding second battery</li>
 						</ul>
 					</div>
 					<div class="split">
